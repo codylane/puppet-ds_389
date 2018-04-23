@@ -8,8 +8,8 @@
 # @param service_enable Whether the service should be enabled. Default: true
 #
 define ds_389::service(
-  String  $service_ensure       = 'running',
-  Boolean $service_enable       = true,
+  String  $service_ensure = 'running',
+  Boolean $service_enable = true,
 ) {
   include ::ds_389
   $service_type = $::ds_389::params::service_type
