@@ -1,3 +1,10 @@
+# This must be here according to https://tickets.puppetlabs.com/browse/PDK-916
+RSpec.configure do |c|
+  # to avoid this deprecation warning
+  # puppetlabs_spec_helper: defaults `mock_with` to `:mocha`. See https://github.com/puppetlabs/puppetlabs_spec_helper#mock_with to choose a sensible value for you
+  c.mock_with :rspec
+end
+
 require 'puppetlabs_spec_helper/module_spec_helper'
 require 'rspec-puppet-facts'
 include RspecPuppetFacts
