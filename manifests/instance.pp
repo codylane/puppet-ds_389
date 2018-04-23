@@ -17,6 +17,9 @@
 # @param root_dn_pass The root dn password to ensure. Required.
 # @param cert_db_pass The certificate db password to ensure. Required.
 # @param suffix The LDAP suffix to use. Required.
+# @param admin_server_ip_address The IP address to run the admin server on, it's recommended to use 127.0.0.1 because this implementation is not behind https
+# @param admin_domain The name domain for the admin server. Default: $::domain
+# @param admin_port The admin server port.  Default: 9830
 # @param group The group for the instance. Default: $::ds_389::group
 # @param user The user for the instance. Default: $::ds_389::user
 # @param server_id The server identifier for the instance. Default: $::hostname
@@ -38,30 +41,44 @@ define ds_389::instance(
   Variant[String,Sensitive[String]] $root_dn_pass,
   Variant[String,Sensitive[String]] $cert_db_pass,
   String                            $suffix,
-  String                            $group                 = $::ds_389::group,
-  String                            $user                  = $::ds_389::user,
-  String                            $server_id             = $::hostname,
-  String                            $server_host           = $::fqdn,
-  Integer                           $server_port           = 389,
-  Integer                           $server_ssl_port       = 636,
-  Integer                           $minssf                = 0,
-  Optional[Array]                   $subject_alt_names     = undef,
-  Optional[Hash]                    $replication           = undef,
-  Optional[Hash]                    $ssl                   = undef,
-  Optional[String]                  $ssl_version_min       = undef,
-  Optional[Hash]                    $schema_extensions     = undef,
-  Optional[Hash]                    $modify_ldifs          = undef,
-  Optional[Hash]                    $add_ldifs             = undef,
-  Optional[Hash]                    $base_load_ldifs       = undef,
+  String                            $admin_server_ip_address = '127.0.0.1',
+  String                            $admin_domain            = $::domain,
+  Integer                           $admin_port              = 9830,
+  String                            $group                   = $::ds_389::group,
+  String                            $user                    = $::ds_389::user,
+  String                            $server_id               = $::hostname,
+  String                            $server_host             = $::fqdn,
+  Integer                           $server_port             = 389,
+  Integer                           $server_ssl_port         = 636,
+  Integer                           $minssf                  = 0,
+  Optional[Array]                   $subject_alt_names       = undef,
+  Optional[Hash]                    $replication             = undef,
+  Optional[Hash]                    $ssl                     = undef,
+  Optional[String]                  $ssl_version_min         = undef,
+  Optional[Hash]                    $schema_extensions       = undef,
+  Optional[Hash]                    $modify_ldifs            = undef,
+  Optional[Hash]                    $add_ldifs               = undef,
+  Optional[Hash]                    $base_load_ldifs         = undef,
 ) {
   include ::ds_389
 
+  $setup_ds_base_opts = "--silent General.FullMachineName=${server_host} General.SuiteSpotGroup=${group} General.SuiteSpotUserID=${user} slapd.InstallLdifFile=none slapd.RootDN=\"${root_dn}\" slapd.RootDNPwd=${root_dn_pass} slapd.ServerIdentifier=${server_id} slapd.ServerPort=${server_port} slapd.Suffix=${suffix}"  # lint:ignore:140chars
+  $setup_ds_admin_base_opts = "--keepcache General.AdminDomain=${admin_domain} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=${root_dn_pass} admin.Port=${admin_port} admin.ServerAdminID=admin admin.ServerAdminPwd=${root_dn_pass} admin.ServerIpAddress=\"${admin_server_ip_address}\" admin.SysUser=${user}"  # lint:ignore:140chars
   $instance_path = "/etc/dirsrv/slapd-${server_id}"
+  if $::ds_389::manage_admin {
+    $setup_ds_cmd = $::ds_389::params::setup_ds_admin
+    $setup_ds_install_opts = "${setup_ds_base_opts} ${setup_ds_admin_base_opts}"
+  }
+  else {
+    $setup_ds_cmd = $::ds_389::params::setup_ds
+    $setup_ds_install_opts = $setup_ds_base_opts
+  }
   exec { "setup ds: ${server_id}":
-    command => "${::ds_389::params::setup_ds} --silent General.FullMachineName=${server_host} General.SuiteSpotGroup=${group} General.SuiteSpotUserID=${user} slapd.InstallLdifFile=none slapd.RootDN=\"${root_dn}\" slapd.RootDNPwd=${root_dn_pass} slapd.ServerIdentifier=${server_id} slapd.ServerPort=${server_port} slapd.Suffix=${suffix}", # lint:ignore:140chars
-    path    => '/usr/sbin:/usr/bin:/sbin:/bin',
-    creates => $instance_path,
-    notify  => Exec["stop ${server_id} to create new token"],
+    command   => "${setup_ds_cmd} ${setup_ds_install_opts}",
+    path      => '/usr/sbin:/usr/bin:/sbin:/bin',
+    creates   => $instance_path,
+    logoutput => true,
+    notify    => Exec["stop ${server_id} to create new token"],
   }
   if $::ds_389::params::service_type == 'systemd' {
     $service_stop_command = "/bin/systemctl stop dirsrv@${server_id}"

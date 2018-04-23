@@ -35,6 +35,11 @@ describe 'ds_389 class' do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end
+
+    describe service('dirsrv-admin') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
   end
 
   if ENV['EXTERNAL_CERT']
@@ -99,6 +104,11 @@ describe 'ds_389 class' do
       end
 
       describe service('dirsrv@bar') do
+        it { is_expected.to be_enabled }
+        it { is_expected.to be_running }
+      end
+
+      describe service('dirsrv-admin') do
         it { is_expected.to be_enabled }
         it { is_expected.to be_running }
       end

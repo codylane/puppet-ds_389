@@ -8,8 +8,8 @@
 # @param service_enable Whether the service should be enabled. Default: true
 #
 define ds_389::service(
-  String  $service_ensure = 'running',
-  Boolean $service_enable = true,
+  String  $service_ensure       = 'running',
+  Boolean $service_enable       = true,
 ) {
   include ::ds_389
   $service_type = $::ds_389::params::service_type
@@ -35,4 +35,14 @@ define ds_389::service(
       require    => File["/etc/init.d/dirsrv@${name}"],
     }
   }
+  if $::ds_389::manage_admin {
+    service { $::ds_389::admin_service_name:
+      ensure     => $ds_389::admin_service_ensure,
+      enable     => $ds_389::admin_service_enable,
+      hasrestart => true,
+      hasstatus  => true,
+      require    => Service["dirsrv@${name}"],
+    }
+  }
+
 }

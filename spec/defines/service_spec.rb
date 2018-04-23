@@ -141,9 +141,20 @@ exit 0
                 hasstatus: true,
               ).that_requires('File[/etc/init.d/dirsrv@specdirectory]')
             }
+
           end
         end
         # rubocop:enable RepeatedExample
+
+        it {
+          is_expected.to contain_service('dirsrv-admin').with(
+            ensure: 'running',
+            enable: true,
+            hasrestart: true,
+            hasstatus: true,
+            require: 'Service[dirsrv@specdirectory]',
+          )
+        }
       end
 
       context 'with all params' do

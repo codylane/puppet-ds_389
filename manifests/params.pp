@@ -6,10 +6,14 @@ class ds_389::params {
 
   case $::osfamily {
     'Debian': {
+      $admin_service_name = 'dirsrv-admin'
+      $admin_service_ensure = 'running'
+      $admin_service_enable = true
       $ssl_dir = '/etc/ssl'
       $user_shell = '/bin/false'
       $nsstools_package_name = 'libnss3-tools'
       $setup_ds = 'setup-ds'
+      $setup_ds_admin = 'setup-ds-admin'
       $cacert_rehash = 'c_rehash'
       $limits_config_dir = '/etc/default'
       case $::operatingsystemmajrelease {
@@ -24,10 +28,14 @@ class ds_389::params {
       }
     }
     'RedHat': {
+      $admin_service_name = 'dirsrv-admin'
+      $admin_service_ensure = 'running'
+      $admin_service_enable = true
       $ssl_dir = '/etc/pki/tls/certs'
       $user_shell = '/sbin/nologin'
       $nsstools_package_name = 'nss-tools'
       $setup_ds = 'setup-ds.pl'
+      $setup_ds_admin = 'setup-ds-admin.pl'
       $cacert_rehash = 'cacertdir_rehash'
       $limits_config_dir = '/etc/sysconfig'
       case $::operatingsystemmajrelease {
