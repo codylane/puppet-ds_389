@@ -62,7 +62,7 @@ define ds_389::instance(
 ) {
   include ::ds_389
 
-  $setup_ds_base_opts = "--silent General.FullMachineName=${server_host} General.SuiteSpotGroup=${group} General.SuiteSpotUserID=${user} slapd.InstallLdifFile=none slapd.RootDN=\"${root_dn}\" slapd.RootDNPwd=${root_dn_pass} slapd.ServerIdentifier=${server_id} slapd.ServerPort=${server_port} slapd.Suffix=${suffix}"  # lint:ignore:140chars
+  $setup_ds_base_opts = "--silent General.FullMachineName=${server_host} General.SuiteSpotGroup=${group} General.SuiteSpotUserID=${user} slapd.AddOrgEntries=Yes slapd.AddSampleEntries=No slapd.InstallLdifFile=suggest slapd.RootDN=\"${root_dn}\" slapd.RootDNPwd=${root_dn_pass} slapd.ServerIdentifier=${server_id} slapd.ServerPort=${server_port} slapd.Suffix=${suffix}"  # lint:ignore:140chars
   $setup_ds_admin_base_opts = "--keepcache General.AdminDomain=${admin_domain} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=${root_dn_pass} admin.Port=${admin_port} admin.ServerAdminID=admin admin.ServerAdminPwd=${root_dn_pass} admin.ServerIpAddress=\"${admin_server_ip_address}\" admin.SysUser=${user}"  # lint:ignore:140chars
   $instance_path = "/etc/dirsrv/slapd-${server_id}"
   if $::ds_389::manage_admin {

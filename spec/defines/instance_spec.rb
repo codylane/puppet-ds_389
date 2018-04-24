@@ -44,7 +44,7 @@ describe 'ds_389::instance' do
         when 'Debian'
           it {
             is_expected.to contain_exec('setup ds: specdirectory').with(
-              'command' => "setup-ds-admin --silent General.FullMachineName=foo.example.com General.SuiteSpotGroup=dirsrv General.SuiteSpotUserID=dirsrv slapd.InstallLdifFile=none slapd.RootDN=\"cn=Directory Manager\" slapd.RootDNPwd=supersecure slapd.ServerIdentifier=specdirectory slapd.ServerPort=389 slapd.Suffix=dc=example,dc=com --keepcache General.AdminDomain=#{os_facts[:domain]} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=supersecure admin.Port=9830 admin.ServerAdminID=admin admin.ServerAdminPwd=supersecure admin.ServerIpAddress=\"127.0.0.1\" admin.SysUser=dirsrv", # rubocop:disable LineLength
+              'command' => "setup-ds-admin --silent General.FullMachineName=foo.example.com General.SuiteSpotGroup=dirsrv General.SuiteSpotUserID=dirsrv slapd.AddOrgEntries=Yes slapd.AddSampleEntries=No slapd.InstallLdifFile=suggest slapd.RootDN=\"cn=Directory Manager\" slapd.RootDNPwd=supersecure slapd.ServerIdentifier=specdirectory slapd.ServerPort=389 slapd.Suffix=dc=example,dc=com --keepcache General.AdminDomain=#{os_facts[:domain]} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=supersecure admin.Port=9830 admin.ServerAdminID=admin admin.ServerAdminPwd=supersecure admin.ServerIpAddress=\"127.0.0.1\" admin.SysUser=dirsrv", # rubocop:disable LineLength
               'path'    => '/usr/sbin:/usr/bin:/sbin:/bin',
               'creates' => '/etc/dirsrv/slapd-specdirectory',
             )
@@ -95,7 +95,7 @@ describe 'ds_389::instance' do
         when 'RedHat'
           it {
             is_expected.to contain_exec('setup ds: specdirectory').with(
-              'command' => "setup-ds-admin.pl --silent General.FullMachineName=foo.example.com General.SuiteSpotGroup=dirsrv General.SuiteSpotUserID=dirsrv slapd.InstallLdifFile=none slapd.RootDN=\"cn=Directory Manager\" slapd.RootDNPwd=supersecure slapd.ServerIdentifier=specdirectory slapd.ServerPort=389 slapd.Suffix=dc=example,dc=com --keepcache General.AdminDomain=#{os_facts[:domain]} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=supersecure admin.Port=9830 admin.ServerAdminID=admin admin.ServerAdminPwd=supersecure admin.ServerIpAddress=\"127.0.0.1\" admin.SysUser=dirsrv", # rubocop:disable LineLength
+              'command' => "setup-ds-admin.pl --silent General.FullMachineName=foo.example.com General.SuiteSpotGroup=dirsrv General.SuiteSpotUserID=dirsrv slapd.AddOrgEntries=Yes slapd.AddSampleEntries=No slapd.InstallLdifFile=suggest slapd.RootDN=\"cn=Directory Manager\" slapd.RootDNPwd=supersecure slapd.ServerIdentifier=specdirectory slapd.ServerPort=389 slapd.Suffix=dc=example,dc=com --keepcache General.AdminDomain=#{os_facts[:domain]} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=supersecure admin.Port=9830 admin.ServerAdminID=admin admin.ServerAdminPwd=supersecure admin.ServerIpAddress=\"127.0.0.1\" admin.SysUser=dirsrv", # rubocop:disable LineLength
               'path'    => '/usr/sbin:/usr/bin:/sbin:/bin',
               'creates' => '/etc/dirsrv/slapd-specdirectory',
             )
@@ -658,7 +658,7 @@ describe 'ds_389::instance' do
           when 'Debian'
             it {
               is_expected.to contain_exec('setup ds: specdirectory').with(
-                'command' => "setup-ds-admin --silent General.FullMachineName=foo.example.com General.SuiteSpotGroup=custom_group General.SuiteSpotUserID=custom_user slapd.InstallLdifFile=none slapd.RootDN=\"cn=Directory Manager\" slapd.RootDNPwd=supersecure slapd.ServerIdentifier=specdirectory slapd.ServerPort=389 slapd.Suffix=dc=example,dc=com --keepcache General.AdminDomain=#{os_facts[:domain]} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=supersecure admin.Port=9830 admin.ServerAdminID=admin admin.ServerAdminPwd=supersecure admin.ServerIpAddress=\"127.0.0.1\" admin.SysUser=custom_user", # rubocop:disable LineLength
+                'command' => "setup-ds-admin --silent General.FullMachineName=foo.example.com General.SuiteSpotGroup=custom_group General.SuiteSpotUserID=custom_user slapd.AddOrgEntries=Yes slapd.AddSampleEntries=No slapd.InstallLdifFile=suggest slapd.RootDN=\"cn=Directory Manager\" slapd.RootDNPwd=supersecure slapd.ServerIdentifier=specdirectory slapd.ServerPort=389 slapd.Suffix=dc=example,dc=com --keepcache General.AdminDomain=#{os_facts[:domain]} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=supersecure admin.Port=9830 admin.ServerAdminID=admin admin.ServerAdminPwd=supersecure admin.ServerIpAddress=\"127.0.0.1\" admin.SysUser=custom_user", # rubocop:disable LineLength
                 'path'    => '/usr/sbin:/usr/bin:/sbin:/bin',
                 'creates' => '/etc/dirsrv/slapd-specdirectory',
               )
@@ -675,7 +675,7 @@ describe 'ds_389::instance' do
           when 'RedHat'
             it {
               is_expected.to contain_exec('setup ds: specdirectory').with(
-                'command' => "setup-ds-admin.pl --silent General.FullMachineName=foo.example.com General.SuiteSpotGroup=custom_group General.SuiteSpotUserID=custom_user slapd.InstallLdifFile=none slapd.RootDN=\"cn=Directory Manager\" slapd.RootDNPwd=supersecure slapd.ServerIdentifier=specdirectory slapd.ServerPort=389 slapd.Suffix=dc=example,dc=com --keepcache General.AdminDomain=#{os_facts[:domain]} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=supersecure admin.Port=9830 admin.ServerAdminID=admin admin.ServerAdminPwd=supersecure admin.ServerIpAddress=\"127.0.0.1\" admin.SysUser=custom_user", # rubocop:disable LineLength
+                'command' => "setup-ds-admin.pl --silent General.FullMachineName=foo.example.com General.SuiteSpotGroup=custom_group General.SuiteSpotUserID=custom_user slapd.AddOrgEntries=Yes slapd.AddSampleEntries=No slapd.InstallLdifFile=suggest slapd.RootDN=\"cn=Directory Manager\" slapd.RootDNPwd=supersecure slapd.ServerIdentifier=specdirectory slapd.ServerPort=389 slapd.Suffix=dc=example,dc=com --keepcache General.AdminDomain=#{os_facts[:domain]} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=supersecure admin.Port=9830 admin.ServerAdminID=admin admin.ServerAdminPwd=supersecure admin.ServerIpAddress=\"127.0.0.1\" admin.SysUser=custom_user", # rubocop:disable LineLength
                 'path'    => '/usr/sbin:/usr/bin:/sbin:/bin',
                 'creates' => '/etc/dirsrv/slapd-specdirectory',
               )
@@ -743,7 +743,7 @@ describe 'ds_389::instance' do
         when 'Debian'
           it {
             is_expected.to contain_exec('setup ds: ldap01').with(
-              'command' => "setup-ds-admin --silent General.FullMachineName=ldap.test.org General.SuiteSpotGroup=custom_group General.SuiteSpotUserID=custom_user slapd.InstallLdifFile=none slapd.RootDN=\"cn=Directory Manager\" slapd.RootDNPwd=supersecure slapd.ServerIdentifier=ldap01 slapd.ServerPort=1389 slapd.Suffix=dc=test,dc=org --keepcache General.AdminDomain=#{os_facts[:domain]} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=supersecure admin.Port=9830 admin.ServerAdminID=admin admin.ServerAdminPwd=supersecure admin.ServerIpAddress=\"127.0.0.1\" admin.SysUser=custom_user", # rubocop:disable LineLength
+              'command' => "setup-ds-admin --silent General.FullMachineName=ldap.test.org General.SuiteSpotGroup=custom_group General.SuiteSpotUserID=custom_user slapd.AddOrgEntries=Yes slapd.AddSampleEntries=No slapd.InstallLdifFile=suggest slapd.RootDN=\"cn=Directory Manager\" slapd.RootDNPwd=supersecure slapd.ServerIdentifier=ldap01 slapd.ServerPort=1389 slapd.Suffix=dc=test,dc=org --keepcache General.AdminDomain=#{os_facts[:domain]} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=supersecure admin.Port=9830 admin.ServerAdminID=admin admin.ServerAdminPwd=supersecure admin.ServerIpAddress=\"127.0.0.1\" admin.SysUser=custom_user", # rubocop:disable LineLength
               'path'    => '/usr/sbin:/usr/bin:/sbin:/bin',
               'creates' => '/etc/dirsrv/slapd-ldap01',
             )
@@ -794,7 +794,7 @@ describe 'ds_389::instance' do
         when 'RedHat'
           it {
             is_expected.to contain_exec('setup ds: ldap01').with(
-              'command' => "setup-ds-admin.pl --silent General.FullMachineName=ldap.test.org General.SuiteSpotGroup=custom_group General.SuiteSpotUserID=custom_user slapd.InstallLdifFile=none slapd.RootDN=\"cn=Directory Manager\" slapd.RootDNPwd=supersecure slapd.ServerIdentifier=ldap01 slapd.ServerPort=1389 slapd.Suffix=dc=test,dc=org --keepcache General.AdminDomain=#{os_facts[:domain]} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=supersecure admin.Port=9830 admin.ServerAdminID=admin admin.ServerAdminPwd=supersecure admin.ServerIpAddress=\"127.0.0.1\" admin.SysUser=custom_user", # rubocop:disable LineLength
+              'command' => "setup-ds-admin.pl --silent General.FullMachineName=ldap.test.org General.SuiteSpotGroup=custom_group General.SuiteSpotUserID=custom_user slapd.AddOrgEntries=Yes slapd.AddSampleEntries=No slapd.InstallLdifFile=suggest slapd.RootDN=\"cn=Directory Manager\" slapd.RootDNPwd=supersecure slapd.ServerIdentifier=ldap01 slapd.ServerPort=1389 slapd.Suffix=dc=test,dc=org --keepcache General.AdminDomain=#{os_facts[:domain]} General.ConfigDirectoryAdminID=admin General.ConfigDirectoryAdminPwd=supersecure admin.Port=9830 admin.ServerAdminID=admin admin.ServerAdminPwd=supersecure admin.ServerIpAddress=\"127.0.0.1\" admin.SysUser=custom_user", # rubocop:disable LineLength
               'path'    => '/usr/sbin:/usr/bin:/sbin:/bin',
               'creates' => '/etc/dirsrv/slapd-ldap01',
             )
