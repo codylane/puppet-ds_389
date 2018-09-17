@@ -9,6 +9,9 @@
 #
 # @param package_name Name of the 389 ds package to install. Default: '389-ds-base'
 # @param package_ensure 389 ds package state. Default 'installed'
+# @param admin_package_name Name of the 389 ds admin package to install. Default: '389-admin'
+# @param admin_package_ensure 389 ds admin package state. Default: 'installed'
+# @param manage_admin Feature toggle to enable this module to manage the install of the 389 admin package. Default: true
 # @param user User account 389 ds should run as. Default: 'dirsrv'
 # @param group Group account 389 ds user should belong to. Default: 'dirsrv'
 # @param cacerts_path Target directory the 389 ds certs should be exported to. Default: '/etc/openldap/cacerts'
@@ -16,13 +19,16 @@
 # @param instances A hash of ds_389::instance resources. Optional.
 #
 class ds_389 (
-  String               $package_name   = '389-ds-base',
-  String               $package_ensure = 'installed',
-  String               $user           = 'dirsrv',
-  String               $group          = 'dirsrv',
-  Stdlib::Absolutepath $cacerts_path   = '/etc/openldap/cacerts',
-  Stdlib::Absolutepath $home_dir       = '/usr/share/dirsrv',
-  Optional[Hash]       $instances      = undef,
+  String               $package_name         = '389-ds-base',
+  String               $package_ensure       = 'installed',
+  String               $admin_package_name   = '389-admin',
+  String               $admin_package_ensure = 'installed',
+  Boolean              $manage_admin         = true,
+  String               $user                 = 'dirsrv',
+  String               $group                = 'dirsrv',
+  Stdlib::Absolutepath $cacerts_path         = '/etc/openldap/cacerts',
+  Stdlib::Absolutepath $home_dir             = '/usr/share/dirsrv',
+  Optional[Hash]       $instances            = undef,
 ) inherits ds_389::params {
 
   class { '::ds_389::install': }

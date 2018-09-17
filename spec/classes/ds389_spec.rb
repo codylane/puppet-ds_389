@@ -31,6 +31,16 @@ describe 'ds_389' do
         }
 
         it {
+          is_expected.to contain_package('389-admin').with(
+            ensure: 'installed',
+          ).that_requires(
+            [
+              'Package[389-ds-base]',
+            ],
+          )
+        }
+
+        it {
           is_expected.to contain_group('dirsrv').with(
             ensure: 'present',
             system: true,
@@ -121,6 +131,7 @@ describe 'ds_389' do
       context 'with parameter overrides' do
         let(:params) do
           {
+            admin_package_name: '389-ds-admin-custom',
             package_name: '389-ds-custom',
             user: 'custom_user',
             group: 'custom_group',
@@ -147,6 +158,16 @@ describe 'ds_389' do
             [
               'File[/etc/dirsrv]',
               'Exec[Create ldap cacerts directory]',
+            ],
+          )
+        }
+
+        it {
+          is_expected.to contain_package('389-ds-admin-custom').with(
+            ensure: 'installed',
+          ).that_requires(
+            [
+              'Package[389-ds-custom]',
             ],
           )
         }

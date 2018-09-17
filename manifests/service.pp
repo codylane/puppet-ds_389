@@ -35,4 +35,14 @@ define ds_389::service(
       require    => File["/etc/init.d/dirsrv@${name}"],
     }
   }
+  if $::ds_389::manage_admin {
+    service { $::ds_389::admin_service_name:
+      ensure     => $ds_389::admin_service_ensure,
+      enable     => $ds_389::admin_service_enable,
+      hasrestart => true,
+      hasstatus  => true,
+      require    => Service["dirsrv@${name}"],
+    }
+  }
+
 }

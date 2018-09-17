@@ -17,6 +17,14 @@ class ds_389::install {
       Exec['Create ldap cacerts directory'],
     ],
   }
+  if $ds_389::manage_admin {
+    package { $::ds_389::admin_package_name:
+      ensure  => $::ds_389::admin_package_ensure,
+      require => [
+        Package[$::ds_389::package_name],
+      ],
+    }
+  }
   package { $::ds_389::params::nsstools_package_name:
     ensure => 'installed',
   }
